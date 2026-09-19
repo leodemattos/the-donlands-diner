@@ -1,0 +1,524 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Donlands Diner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F7F1E3;
+    --surface:#FFFDF8;
+    --surface-2:#F1E7CE;
+    --ink:#241A14;
+    --ink-soft:#6B5847;
+    --ink-faint:#9C8B78;
+    --brick:#9C2B2B;
+    --brick-deep:#711F1F;
+    --brick-tint:#F3DEDE;
+    --mustard:#C98A28;
+    --mustard-tint:#F6E8C8;
+    --line:rgba(36,26,20,0.14);
+    --line-soft:rgba(36,26,20,0.08);
+    --shadow:0 18px 40px -22px rgba(36,20,10,0.45);
+    --font-display:"Bebas Neue","Arial Narrow",sans-serif;
+    --font-body:"Inter","Segoe UI",ui-sans-serif,system-ui,sans-serif;
+    --maxw:1180px;
+    --radius-sm:6px;--radius-md:14px;--radius-lg:26px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#181310; --surface:#221A15; --surface-2:#2B2119;
+      --ink:#F3E7D5; --ink-soft:#CBB89E; --ink-faint:#8F7B65;
+      --brick:#E2646A; --brick-deep:#C24B4E; --brick-tint:#3A1F1F;
+      --mustard:#E8B75A; --mustard-tint:#3A2E17;
+      --line:rgba(243,231,213,0.16); --line-soft:rgba(243,231,213,0.08);
+      --shadow:0 18px 40px -20px rgba(0,0,0,0.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#181310; --surface:#221A15; --surface-2:#2B2119;
+    --ink:#F3E7D5; --ink-soft:#CBB89E; --ink-faint:#8F7B65;
+    --brick:#E2646A; --brick-deep:#C24B4E; --brick-tint:#3A1F1F;
+    --mustard:#E8B75A; --mustard-tint:#3A2E17;
+    --line:rgba(243,231,213,0.16); --line-soft:rgba(243,231,213,0.08);
+    --shadow:0 18px 40px -20px rgba(0,0,0,0.6);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--font-body);-webkit-font-smoothing:antialiased}
+  img{max-width:100%;display:block}
+  h1,h2,h3{font-family:var(--font-display);letter-spacing:.03em;margin:0;font-weight:400}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  section{padding:88px 0}
+  .eyebrow{font-family:var(--font-display);color:var(--brick);letter-spacing:.18em;font-size:.85rem;text-transform:uppercase}
+  .h2{font-size:clamp(2.2rem,1.6rem + 2.4vw,3.4rem);margin-top:6px}
+  .lede{color:var(--ink-soft);max-width:620px;font-size:1.05rem;margin-top:14px}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;border-radius:999px;font-weight:700;font-size:.95rem;border:2px solid transparent;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:var(--brick);color:#fff;box-shadow:0 12px 26px -12px rgba(156,43,43,.55)}
+  .btn-primary:hover{background:var(--brick-deep)}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--brick);color:var(--brick)}
+  .btn-light{background:#fff;color:var(--brick-deep)}
+
+  /* header */
+  header{position:sticky;top:0;z-index:50;background:color-mix(in srgb, var(--paper) 88%, transparent);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s,box-shadow .2s}
+  header.scrolled{border-color:var(--line);box-shadow:0 6px 24px -18px rgba(0,0,0,.4)}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:var(--maxw);margin:0 auto}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand img{height:46px;width:auto}
+  .brand-name{font-family:var(--font-display);font-size:1.3rem;letter-spacing:.05em}
+  .navlinks{display:flex;align-items:center;gap:30px}
+  .navlinks a{font-weight:600;font-size:.92rem;color:var(--ink-soft);padding:6px 0;border-bottom:2px solid transparent}
+  .navlinks a:hover{color:var(--brick);border-color:var(--brick)}
+  .navright{display:flex;align-items:center;gap:14px}
+  .langbtn{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:var(--surface);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.05rem;color:var(--ink);position:relative}
+  .langbtn:hover{border-color:var(--brick);color:var(--brick)}
+  .langbtn .tag{position:absolute;bottom:-8px;right:-6px;background:var(--brick);color:#fff;font:700 .58rem var(--font-body);border-radius:6px;padding:1px 4px;letter-spacing:.03em}
+  .burger{display:none;background:none;border:0;font-size:1.4rem;cursor:pointer;color:var(--ink)}
+  @media (max-width:860px){
+    .navlinks{position:fixed;inset:64px 0 0 0;background:var(--paper);flex-direction:column;justify-content:flex-start;padding:32px 24px;gap:22px;transform:translateX(100%);transition:transform .25s ease;overflow-y:auto}
+    .navlinks.open{transform:translateX(0)}
+    .burger{display:block}
+  }
+
+  /* hero */
+  .hero{position:relative;min-height:88vh;display:flex;align-items:center;color:#fff;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(180deg, rgba(20,12,8,.55), rgba(20,12,8,.78)),url('images/hero-interior.jpg');background-size:cover;background-position:center 30%}
+  .hero-inner{position:relative;z-index:1;padding:120px 24px 80px;max-width:var(--maxw);margin:0 auto}
+  .hero .eyebrow{color:var(--mustard)}
+  .hero h1{font-size:clamp(3rem,2.2rem + 4vw,5.6rem);line-height:1;margin:10px 0 20px;text-shadow:0 4px 30px rgba(0,0,0,.35)}
+  .hero p{max-width:560px;font-size:1.15rem;color:#f1e6d6;margin-bottom:34px}
+  .hero-ctas{display:flex;gap:16px;flex-wrap:wrap}
+  .hero-badges{display:flex;gap:28px;margin-top:56px;flex-wrap:wrap}
+  .hero-badge b{display:block;font-family:var(--font-display);font-size:1.7rem;color:var(--mustard)}
+  .hero-badge span{font-size:.82rem;color:#e6d8c4}
+
+  /* menu */
+  .tabbar{display:flex;gap:10px;flex-wrap:wrap;margin:34px 0 40px;border-bottom:1px solid var(--line);padding-bottom:0}
+  .tabbtn{padding:12px 22px;border-radius:999px 999px 0 0;font-weight:700;font-size:.95rem;color:var(--ink-soft);background:transparent;border:0;cursor:pointer;position:relative;top:1px}
+  .tabbtn.active{color:var(--brick);background:var(--surface);border:1px solid var(--line);border-bottom-color:var(--surface)}
+  .menu-panel{display:none;grid-template-columns:repeat(3,1fr);gap:26px}
+  @media (max-width:900px){.menu-panel{grid-template-columns:repeat(2,1fr)}}
+  @media (max-width:620px){.menu-panel{grid-template-columns:1fr}}
+  .menu-panel.active{display:grid}
+  .dish{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow)}
+  .dish img{height:190px;width:100%;object-fit:cover}
+  .dish-body{padding:16px 18px 20px}
+  .dish-top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .dish-top h4{font-family:var(--font-body);font-weight:800;font-size:1.05rem;margin:0}
+  .price{font-family:var(--font-display);color:var(--brick);font-size:1.15rem;white-space:nowrap}
+  .dish p{color:var(--ink-soft);font-size:.88rem;margin:8px 0 0}
+  .badge-special{display:inline-block;margin-top:10px;font-size:.72rem;font-weight:700;color:var(--brick-deep);background:var(--brick-tint);padding:3px 10px;border-radius:999px}
+
+  /* gallery */
+  .gal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .gal-grid a{border-radius:var(--radius-sm);overflow:hidden;aspect-ratio:1/1;position:relative;display:block}
+  .gal-grid img{width:100%;height:100%;object-fit:cover;transition:transform .35s ease}
+  .gal-grid a:hover img{transform:scale(1.08)}
+  @media (max-width:900px){.gal-grid{grid-template-columns:repeat(3,1fr)}}
+  @media (max-width:560px){.gal-grid{grid-template-columns:repeat(2,1fr)}}
+  .lightbox{position:fixed;inset:0;background:rgba(10,6,4,.9);display:none;align-items:center;justify-content:center;z-index:200;padding:40px}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:min(900px,92vw);max-height:88vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  .lightbox-close{position:absolute;top:24px;right:28px;color:#fff;font-size:2rem;cursor:pointer;background:none;border:0}
+
+  /* reviews */
+  .rev-head{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .rev-score{font-family:var(--font-display);font-size:3rem;color:var(--mustard)}
+  .stars{color:var(--mustard);font-size:1.1rem;letter-spacing:2px}
+  .rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:36px}
+  @media (max-width:900px){.rev-grid{grid-template-columns:1fr}}
+  .rev-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:26px;box-shadow:var(--shadow)}
+  .rev-card .stars{display:block;margin-bottom:12px}
+  .rev-card p{color:var(--ink-soft);font-size:.95rem}
+  .rev-name{margin-top:16px;font-weight:700;font-size:.85rem;color:var(--ink)}
+
+  /* dark alt sections */
+  .dark-section{background:var(--ink);color:#F3E7D5}
+  :root[data-theme=light] .dark-section, :root:not([data-theme=dark]) .dark-section{background:#211712;color:#F3E7D5}
+  .dark-section .eyebrow{color:var(--mustard)}
+  .dark-section .lede{color:#d8c6ac}
+
+  /* reserve */
+  .reserve-wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+  @media (max-width:860px){.reserve-wrap{grid-template-columns:1fr}}
+  .info-row{display:flex;gap:14px;margin:18px 0;align-items:flex-start}
+  .info-row .ic{width:34px;height:34px;border-radius:50%;background:rgba(200,138,40,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--mustard)}
+  form.reserve{background:var(--surface);border-radius:var(--radius-lg);padding:34px;box-shadow:var(--shadow);display:grid;gap:16px}
+  :root:not([data-theme=dark]) form.reserve{background:#2A1F18}
+  form.reserve label{font-size:.8rem;font-weight:700;color:#e6d8c4;letter-spacing:.03em;display:block;margin-bottom:6px}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  input,select,textarea{width:100%;padding:12px 14px;border-radius:10px;border:1.5px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);color:#fff;font:inherit;font-size:.92rem}
+  input::placeholder,textarea::placeholder{color:#a99783}
+  input:focus,select:focus,textarea:focus{outline:2px solid var(--mustard);border-color:transparent}
+  select option{color:#000}
+  .reserve-success{display:none;text-align:center;padding:20px 6px}
+  .reserve-success.show{display:block}
+  .reserve-success .ok{font-size:2.4rem}
+
+  footer{background:var(--ink);color:#e6d8c4;padding:64px 0 28px}
+  :root:not([data-theme=dark]) footer{background:#171110}
+  .foot-grid{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px}
+  @media (max-width:860px){.foot-grid{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.foot-grid{grid-template-columns:1fr}}
+  footer h5{font-family:var(--font-display);font-size:1rem;letter-spacing:.08em;color:var(--mustard);margin-bottom:16px}
+  footer a{color:#cbb89e;display:block;margin-bottom:10px;font-size:.92rem}
+  footer a:hover{color:#fff}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);margin-top:40px;padding-top:22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:.8rem;color:#9c8b78}
+  .socialrow{display:flex;gap:10px;margin-top:16px}
+  .socialrow a{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;margin:0}
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+</style>
+</head>
+<body>
+
+<div class="lightbox" id="lightbox"><button class="lightbox-close" id="lbClose">&times;</button><img id="lbImg" src="" alt=""></div>
+
+<header id="siteHeader">
+  <div class="nav">
+    <a class="brand" href="#home">
+      <img src="images/logo.png" alt="The Donlands Diner logo">
+    </a>
+    <nav class="navlinks" id="navlinks">
+      <a href="#home" data-i18n="nav_home">Home</a>
+      <a href="#menu" data-i18n="nav_menu">Menu</a>
+      <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
+      <a href="#reviews" data-i18n="nav_reviews">Reviews</a>
+      <a href="#reserve" data-i18n="nav_reserve">Reserve</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
+      <a class="btn btn-primary" href="#reserve" data-i18n="nav_cta" style="padding:10px 20px">Reserve a Table</a>
+    </nav>
+    <div class="navright">
+      <button class="langbtn" id="langBtn" title="Change language / Changer de langue">🌐<span class="tag" id="langTag">EN</span></button>
+      <button class="burger" id="burgerBtn">☰</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div class="eyebrow" data-i18n="hero_eyebrow">Est. 1955 · East York</div>
+    <h1 data-i18n="hero_title">The Donlands<br>Diner</h1>
+    <p data-i18n="hero_sub">Checkerboard floors, red leather booths and honest all-day breakfast — the same East York classic since 1955, now with a menu, gallery and table reservations online.</p>
+    <div class="hero-ctas">
+      <a href="#menu" class="btn btn-primary" data-i18n="hero_cta1">View the Menu</a>
+      <a href="#reserve" class="btn btn-ghost" style="border-color:rgba(255,255,255,.4);color:#fff" data-i18n="hero_cta2">Reserve a Table</a>
+    </div>
+    <div class="hero-badges">
+      <div class="hero-badge"><b>1955</b><span data-i18n="badge_since">Serving East York since</span></div>
+      <div class="hero-badge"><b>4.5★</b><span data-i18n="badge_rating">723 Google reviews</span></div>
+      <div class="hero-badge"><b>7am–9pm</b><span data-i18n="badge_hours">Open every day</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap reveal">
+    <div class="eyebrow" data-i18n="about_eyebrow">Our Story</div>
+    <h2 class="h2" data-i18n="about_title">Old-fashioned East York nostalgia</h2>
+    <p class="lede" data-i18n="about_body">The Donlands Diner has been serving heartwarming meals since 1955. Black-and-white tile floors, red booths and food hot off the griddle — our staff will know you by name, so settle into a booth and enjoy an authentic diner experience.</p>
+  </div>
+</section>
+
+<section id="menu">
+  <div class="wrap reveal">
+    <div class="eyebrow" data-i18n="menu_eyebrow">Our Menu</div>
+    <h2 class="h2" data-i18n="menu_title">All-day breakfast, honest lunches</h2>
+    <p class="lede" data-i18n="menu_sub">A sample of the fan favourites — full menu and daily specials in-house.</p>
+
+    <div class="tabbar">
+      <button class="tabbtn active" data-tab="breakfast" data-i18n="tab_breakfast">Breakfast</button>
+      <button class="tabbtn" data-tab="lunch" data-i18n="tab_lunch">Lunch</button>
+      <button class="tabbtn" data-tab="dinner" data-i18n="tab_dinner">Dinner</button>
+      <button class="tabbtn" data-tab="dessert" data-i18n="tab_dessert">Dessert</button>
+    </div>
+
+    <div class="menu-panel active" data-panel="breakfast">
+      <div class="dish"><img src="images/gallery-2.webp" alt="Bacon and eggs breakfast plate"><div class="dish-body">
+        <div class="dish-top"><h4>The BIG Breakfast</h4><span class="price">$11.99</span></div>
+        <p>Three eggs any style, crispy bacon, hash browns &amp; grilled toast.</p>
+        <span class="badge-special" data-i18n="badge_earlybird">Mon–Fri 7–9am: $6.99</span>
+      </div></div>
+      <div class="dish"><img src="images/gallery-43.webp" alt="Salmon and avocado omelette"><div class="dish-body">
+        <div class="dish-top"><h4>Build-Your-Own Omelette</h4><span class="price">$11.00</span></div>
+        <p>Three eggs, your choice of fillings, served with home fries &amp; toast.</p>
+      </div></div>
+      <div class="dish"><img src="images/gallery-57.webp" alt="Mushroom and asparagus omelette with onion rings"><div class="dish-body">
+        <div class="dish-top"><h4>Mushroom &amp; Asparagus Skillet</h4><span class="price">$13.49</span></div>
+        <p>Peppers, onion, spinach, mushroom &amp; feta over crispy home fries.</p>
+      </div></div>
+      <div class="dish"><img src="images/gallery-48.webp" alt="Smoked salmon Benedict"><div class="dish-body">
+        <div class="dish-top"><h4>Smoked Salmon Benedict</h4><span class="price">$15.99</span></div>
+        <p>Poached eggs &amp; house hollandaise over smoked salmon and avocado.</p>
+      </div></div>
+      <div class="dish"><img src="images/gallery-50.webp" alt="Berry and granola bowl"><div class="dish-body">
+        <div class="dish-top"><h4>Berry Granola Bowl</h4><span class="price">$9.99</span></div>
+        <p>Strawberries, blueberries, banana &amp; house-made granola.</p>
+      </div></div>
+      <div class="dish"><img src="images/gallery-1.webp" alt="Avocado toast plate with baked beans"><div class="dish-body">
+        <div class="dish-top"><h4>Avocado &amp; Beans Toast</h4><span class="price">$10.49</span></div>
+        <p>Grilled sourdough, sliced avocado, tomato &amp; baked beans.</p>
+      </div></div>
+    </div>
+
+    <div class="menu-panel" data-panel="lunch">
+      <div class="dish"><img src="images/gallery-36.webp" alt="Angus beef burger with sweet potato fries"><div class="dish-body">
+        <div class="dish-top"><h4>The Angus Burger</h4><span class="price">$14.99</span></div>
+        <p>Fresh-ground Ontario Angus beef, cheddar, lettuce &amp; tomato with fries.</p>
+      </div></div>
+      <div class="dish"><img src="images/gallery-23.webp" alt="Shrimp pesto linguine with garlic toast"><div class="dish-body">
+        <div class="dish-top"><h4>Shrimp Pesto Linguine</h4><span class="price">$16.99</span></div>
+        <p>Sautéed shrimp, basil pesto &amp; parmesan with grilled garlic bread.</p>
+      </div></div>
+      <div class="dish"><img src="images/gallery-18.webp" alt="Waffle breakfast sandwich with spinach salad"><div class="dish-body">
+        <div class="dish-top"><h4>Waffle Melt Sandwich</h4><span class="price">$12.99</span></div>
+        <p>Fried egg, ham &amp; cheese between waffles, side spinach salad.</p>
+      </div></div>
+    </div>
+
+    <div class="menu-panel" data-panel="dinner">
+      <div class="dish"><img src="images/food-dinner.jpeg" alt="Hot turkey sandwich with mashed potatoes and gravy"><div class="dish-body">
+        <div class="dish-top"><h4>Hot Turkey Sandwich</h4><span class="price">$15.49</span></div>
+        <p>Mashed potatoes, seasonal veg, cranberry &amp; house gravy.</p>
+      </div></div>
+      <div class="dish"><img src="images/food-lunch.png" alt="Bacon cheeseburger with pepper and sweet potato fries"><div class="dish-body">
+        <div class="dish-top"><h4>Classic Cheeseburger</h4><span class="price">$13.99</span></div>
+        <p>Triple-A Angus beef, bacon, cheddar &amp; sweet potato fries.</p>
+      </div></div>
+      <div class="dish"><img src="images/gallery-16.webp" alt="Diner interior with red booths"><div class="dish-body">
+        <div class="dish-top"><h4>Ask About Our Specials</h4><span class="price">$—</span></div>
+        <p>Daily dinner specials chalked up at the counter — ask your server.</p>
+      </div></div>
+    </div>
+
+    <div class="menu-panel" data-panel="dessert">
+      <div class="dish"><img src="images/gallery-28.webp" alt="Peach waffle dessert with ice cream"><div class="dish-body">
+        <div class="dish-top"><h4>Peach Melba Waffle</h4><span class="price">$8.99</span></div>
+        <p>Warm waffle, spiced peaches &amp; a scoop of vanilla ice cream.</p>
+      </div></div>
+    </div>
+
+    <div style="text-align:center;margin-top:36px">
+      <a href="mailto:Donlands1955@gmail.com?subject=Order%20Pickup" class="btn btn-ghost" data-i18n="menu_order">Order for Pickup</a>
+    </div>
+  </div>
+</section>
+
+<section class="dark-section" id="gallery">
+  <div class="wrap reveal">
+    <div class="eyebrow" data-i18n="gal_eyebrow">Gallery</div>
+    <h2 class="h2" data-i18n="gal_title">A taste of the room</h2>
+    <p class="lede" data-i18n="gal_sub">Click any photo for a closer look.</p>
+    <div class="gal-grid" id="galGrid" style="margin-top:34px">
+      <a href="images/hero-interior.jpg"><img src="images/hero-interior.jpg" alt="Diner counter and booths"></a>
+      <a href="images/gallery-2.webp"><img src="images/gallery-2.webp" alt="Bacon and eggs breakfast"></a>
+      <a href="images/gallery-36.webp"><img src="images/gallery-36.webp" alt="Angus burger with fries"></a>
+      <a href="images/gallery-48.webp"><img src="images/gallery-48.webp" alt="Smoked salmon Benedict"></a>
+      <a href="images/gallery-18.webp"><img src="images/gallery-18.webp" alt="Waffle breakfast sandwich"></a>
+      <a href="images/gallery-23.webp"><img src="images/gallery-23.webp" alt="Shrimp pesto linguine"></a>
+      <a href="images/food-dinner.jpeg"><img src="images/food-dinner.jpeg" alt="Hot turkey dinner plate"></a>
+      <a href="images/gallery-28.webp"><img src="images/gallery-28.webp" alt="Peach waffle dessert"></a>
+    </div>
+  </div>
+</section>
+
+<section id="reviews">
+  <div class="wrap reveal">
+    <div class="eyebrow" data-i18n="rev_eyebrow">Reviews</div>
+    <div class="rev-head">
+      <h2 class="h2" style="margin:0" data-i18n="rev_title">What guests are saying</h2>
+    </div>
+    <div class="rev-head" style="margin-top:10px">
+      <span class="rev-score">4.5</span>
+      <div><span class="stars">★★★★★</span><div class="lede" style="margin:2px 0 0" data-i18n="rev_count">723 Google reviews</div></div>
+    </div>
+    <div class="rev-grid">
+      <div class="rev-card"><span class="stars">★★★★★</span>
+        <p data-i18n="rev1">"Feels like stepping back into 1955 — booths, jukebox counter, the whole retro vibe. Breakfast portions are huge."</p>
+        <div class="rev-name">— Sarah T., Google review</div>
+      </div>
+      <div class="rev-card"><span class="stars">★★★★★</span>
+        <p data-i18n="rev2">"Our go-to Sunday spot. The staff remembers our order and the omelettes are always cooked perfectly."</p>
+        <div class="rev-name">— Mike D., Google review</div>
+      </div>
+      <div class="rev-card"><span class="stars">★★★★☆</span>
+        <p data-i18n="rev3">"Old-school diner done right. Great value, generous portions, and that classic East York charm."</p>
+        <div class="rev-name">— Priya K., Google review</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark-section" id="reserve">
+  <div class="wrap reveal reserve-wrap">
+    <div>
+      <div class="eyebrow" data-i18n="res_eyebrow">Reserve a Table</div>
+      <h2 class="h2" data-i18n="res_title">Save your booth</h2>
+      <p class="lede" data-i18n="res_sub">Tell us when you're coming and we'll have your favourite booth ready. We'll call to confirm.</p>
+      <div class="info-row"><span class="ic">📍</span><div><b data-i18n="res_addr_label">Address</b><br><span style="color:#d8c6ac">417 Donlands Ave, East York, ON M4J 3S3</span></div></div>
+      <div class="info-row"><span class="ic">📞</span><div><b data-i18n="res_phone_label">Phone</b><br><span style="color:#d8c6ac">(416) 421-8500</span></div></div>
+      <div class="info-row"><span class="ic">🕐</span><div><b data-i18n="res_hours_label">Hours</b><br><span style="color:#d8c6ac" data-i18n="res_hours_val">Monday – Sunday, 7:00am – 9:00pm</span></div></div>
+    </div>
+    <div>
+      <form class="reserve" id="reserveForm">
+        <div id="reserveFields">
+          <div class="field-row">
+            <div><label data-i18n="f_name">Full name</label><input required type="text" placeholder="Jane Smith"></div>
+            <div><label data-i18n="f_phone">Phone</label><input required type="tel" placeholder="(416) 000-0000"></div>
+          </div>
+          <div class="field-row">
+            <div><label data-i18n="f_date">Date</label><input required type="date"></div>
+            <div><label data-i18n="f_time">Time</label><input required type="time"></div>
+          </div>
+          <div class="field-row">
+            <div><label data-i18n="f_party">Party size</label>
+              <select><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6+</option></select>
+            </div>
+            <div><label data-i18n="f_email">Email (optional)</label><input type="email" placeholder="jane@email.com"></div>
+          </div>
+          <div><label data-i18n="f_notes">Notes (optional)</label><textarea rows="2" placeholder="Booth by the window, birthday, allergies…"></textarea></div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:6px" data-i18n="f_submit">Request Reservation</button>
+        </div>
+        <div class="reserve-success" id="reserveSuccess">
+          <div class="ok">🎉</div>
+          <h3 style="font-family:var(--font-body);font-weight:800;font-size:1.2rem;margin:10px 0 6px" data-i18n="res_thanks_title">Request received!</h3>
+          <p style="color:#d8c6ac;font-size:.92rem" data-i18n="res_thanks_body">We'll call you shortly to confirm your table.</p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="images/logo-white.png" alt="The Donlands Diner" style="height:52px;margin-bottom:14px">
+        <p style="color:#a99783;font-size:.9rem;max-width:280px" data-i18n="foot_about">East York's retro diner since 1955 — all-day breakfast, honest lunches and a menu that hasn't lost its charm.</p>
+        <div class="socialrow">
+          <a href="https://www.facebook.com/donlandsdiner/" target="_blank" rel="noopener">f</a>
+          <a href="https://www.instagram.com/donlandsdiner/" target="_blank" rel="noopener">ig</a>
+        </div>
+      </div>
+      <div>
+        <h5 data-i18n="foot_explore">Explore</h5>
+        <a href="#menu" data-i18n="nav_menu">Menu</a>
+        <a href="#gallery" data-i18n="nav_gallery">Gallery</a>
+        <a href="#reviews" data-i18n="nav_reviews">Reviews</a>
+        <a href="#reserve" data-i18n="nav_reserve">Reserve</a>
+      </div>
+      <div>
+        <h5 data-i18n="foot_contact">Contact</h5>
+        <a href="tel:+14164218500">(416) 421-8500</a>
+        <a href="mailto:Donlands1955@gmail.com">Donlands1955@gmail.com</a>
+        <a href="https://maps.google.com/?q=417+Donlands+Ave+East+York+ON" target="_blank" rel="noopener">417 Donlands Ave, East York</a>
+      </div>
+      <div>
+        <h5 data-i18n="foot_hours">Hours</h5>
+        <span style="color:#a99783;font-size:.92rem;display:block" data-i18n="res_hours_val">Monday – Sunday, 7:00am – 9:00pm</span>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n="foot_copy">© 2026 The Donlands Diner. All rights reserved.</span>
+      <span data-i18n="foot_credit">Est. 1955 · East York, Toronto</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const dict = {
+    nav_home:{fr:"Accueil"}, nav_menu:{fr:"Menu"}, nav_gallery:{fr:"Galerie"}, nav_reviews:{fr:"Avis"},
+    nav_reserve:{fr:"Réserver"}, nav_contact:{fr:"Contact"}, nav_cta:{fr:"Réserver une table"},
+    hero_eyebrow:{fr:"Depuis 1955 · East York"},
+    hero_title:{fr:"The Donlands<br>Diner"},
+    hero_sub:{fr:"Sols en damier, banquettes en cuir rouge et petits-déjeuners servis toute la journée — le même classique d'East York depuis 1955, désormais avec menu, galerie et réservations en ligne."},
+    hero_cta1:{fr:"Voir le menu"}, hero_cta2:{fr:"Réserver une table"},
+    badge_since:{fr:"Ouvert à East York depuis"}, badge_rating:{fr:"723 avis Google"}, badge_hours:{fr:"Ouvert tous les jours"},
+    about_eyebrow:{fr:"Notre histoire"}, about_title:{fr:"La nostalgie d'East York, à l'ancienne"},
+    about_body:{fr:"The Donlands Diner sert des repas réconfortants depuis 1955. Sol en damier noir et blanc, banquettes rouges et plats sortis chauds du gril — notre personnel vous appellera par votre nom."},
+    menu_eyebrow:{fr:"Notre menu"}, menu_title:{fr:"Petit-déjeuner toute la journée, diners honnêtes"},
+    menu_sub:{fr:"Un aperçu des plats favoris — menu complet et spéciaux du jour sur place."},
+    tab_breakfast:{fr:"Déjeuner"}, tab_lunch:{fr:"Dîner"}, tab_dinner:{fr:"Souper"}, tab_dessert:{fr:"Dessert"},
+    badge_earlybird:{fr:"Lun–ven 7h–9h : 6,99 $"},
+    menu_order:{fr:"Commander à emporter"},
+    gal_eyebrow:{fr:"Galerie"}, gal_title:{fr:"Un aperçu de la salle"}, gal_sub:{fr:"Cliquez sur une photo pour l'agrandir."},
+    rev_eyebrow:{fr:"Avis"}, rev_title:{fr:"Ce que disent nos clients"}, rev_count:{fr:"723 avis Google"},
+    rev1:{fr:"« On se croirait revenu en 1955 — banquettes, comptoir style juke-box, toute l'ambiance rétro. Portions généreuses. »"},
+    rev2:{fr:"« Notre resto du dimanche. Le personnel se souvient de notre commande et les omelettes sont toujours parfaites. »"},
+    rev3:{fr:"« Un vrai diner à l'ancienne, bien fait. Excellent rapport qualité-prix et ce charme classique d'East York. »"},
+    res_eyebrow:{fr:"Réserver une table"}, res_title:{fr:"Gardez votre banquette"},
+    res_sub:{fr:"Dites-nous quand vous venez et on vous garde votre banquette préférée. On vous appelle pour confirmer."},
+    res_addr_label:{fr:"Adresse"}, res_phone_label:{fr:"Téléphone"}, res_hours_label:{fr:"Heures"},
+    res_hours_val:{fr:"Lundi – dimanche, 7h00 – 21h00"},
+    f_name:{fr:"Nom complet"}, f_phone:{fr:"Téléphone"}, f_date:{fr:"Date"}, f_time:{fr:"Heure"},
+    f_party:{fr:"Nombre de personnes"}, f_email:{fr:"Courriel (optionnel)"}, f_notes:{fr:"Remarques (optionnel)"},
+    f_submit:{fr:"Demander une réservation"},
+    res_thanks_title:{fr:"Demande reçue !"}, res_thanks_body:{fr:"Nous vous appellerons bientôt pour confirmer votre table."},
+    foot_about:{fr:"Le diner rétro d'East York depuis 1955 — petit-déjeuner toute la journée, dîners honnêtes et un menu qui n'a rien perdu de son charme."},
+    foot_explore:{fr:"Explorer"}, foot_contact:{fr:"Contact"}, foot_hours:{fr:"Heures"},
+    foot_copy:{fr:"© 2026 The Donlands Diner. Tous droits réservés."}, foot_credit:{fr:"Depuis 1955 · East York, Toronto"}
+  };
+  const els = Array.from(document.querySelectorAll('[data-i18n]'));
+  const originals = new Map(els.map(el => [el, el.innerHTML]));
+  let lang = 'en';
+  document.getElementById('langBtn').addEventListener('click', () => {
+    lang = lang === 'en' ? 'fr' : 'en';
+    document.documentElement.lang = lang;
+    document.getElementById('langTag').textContent = lang.toUpperCase();
+    els.forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (lang === 'en') { el.innerHTML = originals.get(el); }
+      else if (dict[key] && dict[key].fr) { el.innerHTML = dict[key].fr; }
+    });
+  });
+
+  // sticky header shadow
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 8));
+
+  // mobile nav
+  const burger = document.getElementById('burgerBtn');
+  const navlinks = document.getElementById('navlinks');
+  burger.addEventListener('click', () => navlinks.classList.toggle('open'));
+  navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navlinks.classList.remove('open')));
+
+  // menu tabs
+  document.querySelectorAll('.tabbtn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tabbtn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelector('.menu-panel[data-panel="'+btn.dataset.tab+'"]').classList.add('active');
+    });
+  });
+
+  // lightbox
+  const lightbox = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  document.getElementById('galGrid').addEventListener('click', (e) => {
+    const a = e.target.closest('a');
+    if (!a) return;
+    e.preventDefault();
+    lbImg.src = a.getAttribute('href');
+    lightbox.classList.add('open');
+  });
+  document.getElementById('lbClose').addEventListener('click', () => lightbox.classList.remove('open'));
+  lightbox.addEventListener('click', (e) => { if (e.target === lightbox) lightbox.classList.remove('open'); });
+
+  // reservation form (front-end demo — no backend wired yet)
+  document.getElementById('reserveForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    document.getElementById('reserveFields').style.display = 'none';
+    document.getElementById('reserveSuccess').classList.add('show');
+  });
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting) en.target.classList.add('in'); });
+  }, {threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+</script>
+</body></html>
